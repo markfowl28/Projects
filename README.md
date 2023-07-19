@@ -1,2 +1,2 @@
 # Projects
-Collection of work through my degree at Valencia College 
+Collection of work through my Computing Technologies degree at Valencia College 
