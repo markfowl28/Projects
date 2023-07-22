@@ -33,17 +33,32 @@ public class Server {
 				input.read(data);
 
 				String clientInput = new String(data, StandardCharsets.UTF_8);
-				clientInput.replace("\n", "");
-				System.out.println("Client said: " + clientInput);
-
-				String response = ("You input [" + clientInput + "]");
-				output.write(response.length());
-				output.write(response.getBytes());
-
-				client.close();
-				if(clientInput.equalsIgnoreCase("shutdown")) {
-					System.out.println("Shutting down.....");
-					shutdown = true;
+				
+				// try/catch to ensure input is an integer 
+				try {
+					int numInput = Integer.parseInt(clientInput);
+					
+					// if/else statement to ensure input is a positive number
+					if(numInput > 0) {
+						int answer = FibbonacciCalc(numInput);
+	
+						String response = Integer.toString(answer);
+	
+						output.write(response.length());
+						output.write(response.getBytes());
+					}
+					else {
+						String error1 = ("Error...Please enter a positive number");
+						
+						output.write(error1.length());
+						output.write(error1.getBytes());
+					}
+					
+				} catch (NumberFormatException e) {
+					String error2 = ("Error....Please enter a number");
+	
+					output.write(error2.length());
+					output.write(error2.getBytes());
 				}
 
 			} catch (IOException e) {
@@ -53,4 +68,18 @@ public class Server {
 		}
 	}
 
+	private static int FibbonacciCalc(int numInput) {
+		int v1 = 0,
+			v2 = 1,
+			v3 = 0;
+
+		for(int i = 2; i <= numInput; i++)
+		{
+			v3 = v1 + v2;
+			v1 = v2;
+			v2 = v3;
+		}
+
+		return v3;
+	}
 }
